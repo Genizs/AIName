@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI智能取名 - 为新生儿取个好名字</title>
+    <script src="https://cdn.tailwindcss.com/3.3.3"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
+            color: #2d3748;
+        }
+        
+        .glassmorphism {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+        }
+        
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 28px 0 rgba(31, 38, 135, 0.2);
+        }
+        
+        .bg-gradient-primary {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+        }
+        
+        .highlight-text {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .highlight-text::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background-color: rgba(99, 102, 241, 0.2);
+            z-index: -1;
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <!-- 导航条 -->
+    <nav class="glassmorphism sticky top-0 z-50 p-4 mb-8">
+        <div class="container mx-auto flex items-center justify-between">
+            <div class="text-xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 text-transparent bg-clip-text">
+                <i class="fas fa-baby mr-2"></i>AI智能取名
+            </div>
+            <div class="hidden md:flex space-x-6">
+                <a href="#generator" class="text-gray-600 hover:text-indigo-600 transition-colors">取名生成</a>
+                <a href="#examples" class="text-gray-600 hover:text-indigo-600 transition-colors">名字示例</a>
+            </div>
+            <button class="md:hidden text-gray-600 focus:outline-none" id="mobileMenuButton" aria-label="导航菜单">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- 头部横幅 -->
+    <header class="container mx-auto py-16 px-4 md:px-8 relative">
+        <div class="max-w-4xl mx-auto text-center">
+            <h1 class="text-4xl md:text-5xl font-bold mb-6">
+                为您的宝宝取一个<span class="highlight-text">美好</span>的名字
+            </h1>
+            <p class="text-xl md:text-2xl text-gray-600 mb-8">AI智能取名，结合传统文化与现代科技，为您的新生儿量身定制</p>
+            <a href="#generator" class="bg-gradient-primary text-white px-8 py-3 rounded-full shadow-lg hover:shadow-xl transition-all">立即取名</a>
+        </div>
+    </header>
+
+    <!-- 取名生成部分 -->
+    <section id="generator" class="container mx-auto py-12 px-4 md:px-8">
+        <div class="glassmorphism p-8 mb-16">
+            <h2 class="text-3xl font-bold mb-6 flex items-center">
+                <div class="w-10 h-10 rounded-full bg-gradient-primary flex items-center justify-center text-white mr-3">
+                    <i class="fas fa-magic"></i>
+                </div>
+                取名生成器
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                    <form id="nameForm" class="space-y-6">
+                        <div>
+                            <label class="block text-gray-700 mb-2">姓氏</label>
+                            <input type="text" id="surname" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" placeholder="请输入宝宝的姓氏" required>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-gray-700 mb-2">性别</label>
+                            <div class="flex space-x-4">
+                                <label class="inline-flex items-center">
+                                    <input type="radio" name="gender" value="男" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500" checked>
+                                    <span class="ml-2">男孩</span>
+                                </label>
+                                <label class="inline-flex items-center">
+                                    <input type="radio" name="gender" value="女" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500">
+                                    <span class="ml-2">女孩</span>
+                                </label>
+                                <label class="inline-flex items-center">
+                                    <input type="radio" name="gender" value="中性" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500">
+                                    <span class="ml-2">中性</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-gray-700 mb-2">出生日期</label>
+                            <input type="date" id="birthDate" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" required>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-gray-700 mb-2">名字字数</label>
+                            <select id="nameLength" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                                <option value="1">单字名</option>
+                                <option value="2" selected>双字名</option>
+                                <option value="3">三字名</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-gray-700 mb-2">取名风格</label>
+                            <select id="style" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                                <option value="传统">传统典雅</option>
+                                <option value="现代">现代时尚</option>
+                                <option value="文艺">诗意唯美</option>
+                                <option value="阳刚">阳刚大气</option>
+                                <option value="温柔">温柔婉约</option>
+                            </select>
+                        </div>
+                        
+                        <button type="button" id="generateBtn" class="w-full bg-gradient-primary text-white px-6 py-3 rounded-lg shadow-lg hover:shadow-xl transition-all">
+                            <i class="fas fa-wand-magic-sparkles mr-2"></i>AI智能生成名字
+                        </button>
+                    </form>
+                </div>
+                
+                <div class="bg-indigo-50 rounded-xl p-6">
+                    <h3 class="text-xl font-semibold mb-4 text-indigo-700">名字生成结果</h3>
+                    <div id="resultContainer" class="grid grid-cols-2 gap-4">
+                        <div class="text-center py-8 text-gray-400">
+                            <i class="fas fa-baby text-4xl mb-2"></i>
+                            <p>填写左侧信息生成名字</p>
+                        </div>
+                    </div>
+                    <button id="regenerateBtn" class="w-full mt-6 bg-white text-indigo-600 px-6 py-2 rounded-lg border border-indigo-200 hover:bg-indigo-50 transition-all hidden">
+                        <i class="fas fa-redo mr-2"></i>重新生成
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 名字示例部分 -->
+    <section id="examples" class="container mx-auto py-12 px-4 md:px-8">
+        <h2 class="text-3xl font-bold mb-12 text-center">精选名字示例</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+            <div class="glassmorphism p-6 card-hover">
+                <img src="https://s.coze.cn/image/OA--0Qx5nro/" alt="男孩名字示例" class="w-full h-48 object-cover rounded-lg mb-4">
+                <h3 class="text-xl font-semibold mb-2">男孩名字</h3>
+                <ul class="space-y-2">
+                    <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2"></i> 浩然 - 胸怀宽广</li>
+                    <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2"></i> 子轩 - 气宇轩昂</li>
+                    <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2"></i> 睿渊 - 学识渊博</li>
+                </ul>
+            </div>
+            
+            <div class="glassmorphism p-6 card-hover">
+                <img src="https://s.coze.cn/image/kYR_7sfuNao/" alt="女孩名字示例" class="w-full h-48 object-cover rounded-lg mb-4">
+                <h3 class="text-xl font-semibold mb-2">女孩名字</h3>
+                <ul class="space-y-2">
+                    <li class="flex items-center"><i class="fas fa-check-circle text-pink-500 mr-2"></i> 雨婷 - 亭亭玉立</li>
+                    <li class="flex items-center"><i class="fas fa-check-circle text-pink-500 mr-2"></i> 诗涵 - 诗情画意</li>
+                    <li class="flex items-center"><i class="fas fa-check-circle text-pink-500 mr-2"></i> 梦琪 - 如珠如宝</li>
+                </ul>
+            </div>
+            
+            <div class="glassmorphism p-6 card-hover">
+                <img src="https://s.coze.cn/image/simgWceR4Xw/" alt="传统名字示例" class="w-full h-48 object-cover rounded-lg mb-4">
+                <h3 class="text-xl font-semibold mb-2">传统名字</h3>
+                <ul class="space-y-2">
+                    <li class="flex items-center"><i class="fas fa-check-circle text-yellow-500 mr-2"></i> 文彬 - 文质彬彬</li>
+                    <li class="flex items-center"><i class="fas fa-check-circle text-yellow-500 mr-2"></i> 淑贞 - 贤淑贞静</li>
+                    <li class="flex items-center"><i class="fas fa-check-circle text-yellow-500 mr-2"></i> 德明 - 明德惟馨</li>
+                </ul>
+            </div>
+            
+            <div class="glassmorphism p-6 card-hover">
+                <img src="https://s.coze.cn/image/J7-2gyNhEiM/" alt="现代名字示例" class="w-full h-48 object-cover rounded-lg mb-4">
+                <h3 class="text-xl font-semibold mb-2">现代名字</h3>
+                <ul class="space-y-2">
+                    <li class="flex items-center"><i class="fas fa-check-circle text-blue-500 mr-2"></i> 一诺 - 一诺千金</li>
+                    <li class="flex items-center"><i class="fas fa-check-circle text-blue-500 mr-2"></i> 梓萱 - 生机勃勃</li>
+                    <li class="flex items-center"><i class="fas fa-check-circle text-blue-500 mr-2"></i> 宇航 - 志在四方</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="glassmorphism p-8">
+            <div class="flex items-center mb-6">
+                <div class="w-12 h-12 rounded-full bg-gradient-primary flex items-center justify-center text-white mr-4">
+                    <i class="fas fa-lightbulb"></i>
+                </div>
+                <h3 class="text-2xl font-semibold">取名小贴士</h3>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-blue-50 rounded-xl p-4">
+                    <div class="text-blue-600 text-xl mb-2"><i class="fas fa-yin-yang mr-2"></i>五行平衡</div>
+                    <p class="text-sm text-gray-600">根据生辰八字分析五行强弱，通过名字补足缺失元素，达到五行平衡</p>
+                </div>
+                <div class="bg-purple-50 rounded-xl p-4">
+                    <div class="text-purple-600 text-xl mb-2"><i class="fas fa-book mr-2"></i>文化内涵</div>
+                    <p class="text-sm text-gray-600">名字应富有文化底蕴，可从诗词典籍中寻找灵感</p>
+                </div>
+                <div class="bg-green-50 rounded-xl p-4">
+                    <div class="text-green-600 text-xl mb-2"><i class="fas fa-volume-up mr-2"></i>音韵美感</div>
+                    <p class="text-sm text-gray-600">注意平仄搭配，避免拗口或不良谐音</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="bg-gray-100 py-8 mt-16">
+        <div class="container mx-auto px-4 text-center text-gray-600">
+            <p>created by <a href="https://space.coze.cn" class="text-indigo-600 hover:text-indigo-800">coze space</a></p>
+            <p class="mt-2">页面内容均由 AI 生成，仅供参考</p>
+        </div>
+    </footer>
+
+    <script>
+        // 移动端导航菜单切换
+        const menuButton = document.getElementById('mobileMenuButton');
+        const mobileMenu = document.getElementById('mobileMenu');
+
+        menuButton.addEventListener('click', function() {
+            mobileMenu.classList.toggle('hidden');
+            
+            // 切换图标
+            const icon = this.querySelector('i');
+            if (mobileMenu.classList.contains('hidden')) {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            } else {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            }
+        });
+
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // 生成名字逻辑
+        document.getElementById('generateBtn').addEventListener('click', function() {
+            const surname = document.getElementById('surname').value;
+            const gender = document.querySelector('input[name="gender"]:checked').value;
+            const birthDate = document.getElementById('birthDate').value;
+            const nameLength = parseInt(document.getElementById('nameLength').value);
+            const style = document.getElementById('style').value;
+            
+            if (!surname || !birthDate) {
+                alert('请填写姓氏和出生日期');
+                return;
+            }
+            
+            // 模拟AI生成名字
+            const result = generateNames(surname, gender, birthDate, nameLength, style);
+            displayResults(result);
+        });
+        
+        document.getElementById('regenerateBtn').addEventListener('click', function() {
+            const surname = document.getElementById('surname').value;
+            const gender = document.querySelector('input[name="gender"]:checked').value;
+            const birthDate = document.getElementById('birthDate').value;
+            const nameLength = parseInt(document.getElementById('nameLength').value);
+            const style = document.getElementById('style').value;
+            
+            const result = generateNames(surname, gender, birthDate, nameLength, style);
+            displayResults(result);
+        });
+
+        function generateNames(surname, gender, birthDate, nameLength, style) {
+            // 根据性别选择不同的名字库
+            let firstNames = [];
+            if (gender === '男') {
+                firstNames = ['浩', '宇', '轩', '睿', '博', '杰', '辰', '昊', '明', '泽', 
+                            '文', '俊', '天', '子', '梓', '浩', '宇', '轩', '睿', '博'];
+            } else if (gender === '女') {
+                firstNames = ['婷', '欣', '怡', '雨', '萱', '梦', '雅', '静', '琳', '雪',
+                            '雯', '诗', '思', '琪', '彤', '婷', '欣', '怡', '雨', '萱'];
+            } else {
+                firstNames = ['浩', '宇', '婷', '欣', '轩', '怡', '睿', '雨', '博', '萱'];
+            }
+            
+            // 根据风格调整名字库
+            if (style === '传统') {
+                firstNames = ['德', '福', '寿', '康', '宁', '安', '乐', '祥', '瑞', '吉'];
+            } else if (style === '现代') {
+                firstNames = ['梓', '昊', '轩', '睿', '博', '杰', '辰', '浩', '宇', '明'];
+            } else if (style === '文艺') {
+                firstNames = ['墨', '诗', '书', '画', '琴', '棋', '歌', '舞', '韵', '律'];
+            } else if (style === '阳刚') {
+                firstNames = ['刚', '强', '勇', '猛', '威', '武', '雄', '伟', '壮', '豪'];
+            } else if (style === '温柔') {
+                firstNames = ['柔', '婉', '淑', '静', '雅', '娴', '惠', '丽', '美', '秀'];
+            }
+            
+            // 根据出生日期计算生肖（简化版）
+            const year = parseInt(birthDate.split('-')[0]);
+            const zodiacs = ['鼠', '牛', '虎', '兔', '龙', '蛇', '马', '羊', '猴', '鸡', '狗', '猪'];
+            const zodiacIndex = (year - 2008) % 12;  // 2008年是鼠年
+            const zodiac = zodiacs[zodiacIndex];
+            
+            // 生成不重复的名字
+            const names = new Set();
+            while (names.size < 10) {
+                let name = surname;
+                
+                if (nameLength === 1) {
+                    name += randomChoice(firstNames);
+                } else if (nameLength === 2) {
+                    name += randomChoice(firstNames) + randomChoice(firstNames);
+                } else {
+                    name += randomChoice(firstNames) + randomChoice(firstNames) + randomChoice(firstNames);
+                }
+                
+                names.add(name);
+            }
+            
+            return {
+                surname,
+                gender,
+                birthDate,
+                zodiac,
+                nameLength,
+                style,
+                generatedNames: Array.from(names),
+                generationTime: new Date().toLocaleString()
+            };
+        }
+        
+        function randomChoice(arr) {
+            return arr[Math.floor(Math.random() * arr.length)];
+        }
+        
+        function displayResults(result) {
+            const container = document.getElementById('resultContainer');
+            container.innerHTML = '';
+            
+            result.generatedNames.forEach(name => {
+                const nameCard = document.createElement('div');
+                nameCard.className = 'bg-white p-4 rounded-lg shadow-sm';
+                nameCard.innerHTML = `
+                    <p class="text-2xl font-bold text-center">${name}</p>
+                    <p class="text-sm text-gray-500 mt-2 text-center">生肖: ${result.zodiac}</p>
+                `;
+                container.appendChild(nameCard);
+            });
+            
+            document.getElementById('regenerateBtn').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
